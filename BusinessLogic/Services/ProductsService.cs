@@ -4,6 +4,7 @@ using BusinessLogic.Interfaces;
 using BusinessLogic.Models;
 using DataAccess.Data;
 using DataAccess.Data.Entities;
+using DataAccess.Repositories;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -16,12 +17,18 @@ namespace BusinessLogic.Services
     internal class ProductsService : IProductsService
     {
         private readonly IMapper mapper;
-        private readonly ShopDbContext context;
+        private readonly IRepository<Product> productsRepo;
+        private readonly IRepository<Category> categoriesRepo;
 
-        public ProductsService(IMapper mapper, ShopDbContext context)
+        //private readonly ShopDbContext context;
+
+        public ProductsService(IMapper mapper, 
+                                IRepository<Product> productsRepo,
+                                IRepository<Category> categoriesRepo/*ShopDbContext context*/)
         {
             this.mapper = mapper;
-            this.context = context;
+            this.productsRepo = productsRepo;
+            this.categoriesRepo = categoriesRepo;
         }
 
         public void Create(CreateProductModel model)
@@ -42,19 +49,18 @@ namespace BusinessLogic.Services
             var entity = mapper.Map<Product>(model);
 
             // create product in the db
-            context.Products.Add(entity);
-            context.SaveChanges();
+            productsRepo.Insert(entity);
+            productsRepo.Save();
         }
 
         public void Delete(int id)
         {
             // delete by id
-            var product = context.Products.Find(id);
+            var product = productsRepo.GetByID(id);
             if (product == null) return; // TODO: throw exceptions
 
-            context.Products.Remove(product);
-            context.SaveChanges();
-
+            productsRepo.Delete(product);
+            productsRepo.Save();
         }
 
         public void Edit(EditProductModel model)
@@ -62,8 +68,8 @@ namespace BusinessLogic.Services
             var entity = mapper.Map<Product>(model);
 
             // update product in the db
-            context.Products.Update(entity);
-            context.SaveChanges();
+            productsRepo.Update(entity);
+            productsRepo.Save();
         }
 
         public ProductDto? Get(int id)
@@ -71,36 +77,40 @@ namespace BusinessLogic.Services
             // with JOIN operators
             //var product = context.Products.Include(x => x.Category).FirstOrDefault(i => i.Id == id);
             // without JOIN operators
-            var product = context.Products.Find(id);
+            var product = productsRepo.GetByID(id);
             if (product == null) return null; // TODO: throw exceptions
 
+            // TODO: add include properties
+
             // load product related entity
-            context.Entry(product).Reference(x => x.Category).Load();
+            //productsRepo.Entry(product).Reference(x => x.Category).Load();
 
             return mapper.Map<ProductDto>(product);
         }
 
         public IEnumerable<ProductDto> Get(IEnumerable<int> ids)
         {
-            return mapper.Map<List<ProductDto>>(context.Products
-                .Include(x => x.Category)
-                .Where(x => ids.Contains(x.Id))
-                .ToList());
+            //return mapper.Map<List<ProductDto>>(context.Products
+            //    .Include(x => x.Category)
+            //    .Where(x => ids.Contains(x.Id))
+            //    .ToList());
+
+            return mapper.Map<List<ProductDto>>(productsRepo.Get(x => ids.Contains(x.Id), includeProperties: "Category"));
         }
 
         public IEnumerable<ProductDto> GetAll()
         {
-            return mapper.Map<List<ProductDto>>(context.Products.Include(x => x.Category).ToList());
+            return mapper.Map<List<ProductDto>>(productsRepo.Get(includeProperties: "Category"));
         }
 
         public IEnumerable<CategoryDto> GetAllCategories()
         {
-            return mapper.Map<List<CategoryDto>>(context.Categories.ToList());
+            return mapper.Map<List<CategoryDto>>(categoriesRepo.Get());
         }
 
         public int GetCount()
         {
-            return context.Products.Count();
+            return productsRepo.Get().Count();
         }
     }
 }

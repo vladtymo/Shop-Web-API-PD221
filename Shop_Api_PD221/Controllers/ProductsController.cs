@@ -22,7 +22,7 @@ namespace Shop_Api_PD221.Controllers
             return Ok(productsService.GetAll());
         }
 
-        [HttpGet("{id:int}")]
+        [HttpGet("{id:int}")] // view/1
         public IActionResult Get([FromRoute] int id)
         {
             return Ok(productsService.Get(id));
