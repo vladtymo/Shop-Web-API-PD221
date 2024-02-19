@@ -4,6 +4,7 @@ using BusinessLogic.Interfaces;
 using BusinessLogic.Models;
 using DataAccess.Data;
 using DataAccess.Data.Entities;
+using DataAccess.Repositories;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 
@@ -12,21 +13,27 @@ namespace BusinessLogic.Services
     internal class OrdersService : IOrdersService
     {
         private readonly IMapper mapper;
-        private readonly ShopDbContext context;
+        private readonly IRepository<Order> ordersR;
+        private readonly IRepository<Product> productsR;
+
+        //private readonly ShopDbContext context;
+
         private readonly ICartService cartService;
         private readonly IEmailSender emailSender;
         //private readonly IViewRender viewRender;
         private readonly UserManager<User> userManager;
 
         public OrdersService(IMapper mapper, 
-                            ShopDbContext context, 
+                            IRepository<Order> ordersR,
+                            IRepository<Product> productsR,
                             ICartService cartService,
                             IEmailSender emailSender,
                             // IViewRender viewRender,
                             UserManager<User> userManager)
         {
             this.mapper = mapper;
-            this.context = context;
+            this.ordersR = ordersR;
+            this.productsR = productsR;
             this.cartService = cartService;
             this.emailSender = emailSender;
             //this.viewRender = viewRender;
@@ -36,7 +43,7 @@ namespace BusinessLogic.Services
         public async Task Create(string userId)
         {
             var ids = cartService.GetProductIds();
-            var products = context.Products.Where(x => ids.Contains(x.Id)).ToList();
+            var products = productsR.Get(x => ids.Contains(x.Id));
 
             User user = await userManager.FindByIdAsync(userId) ?? throw new Exception("User not found!");
 
@@ -44,12 +51,12 @@ namespace BusinessLogic.Services
             {
                 Date = DateTime.Now,
                 UserId = userId,
-                Products = products,
+                Products = products.ToList(),
                 TotalPrice = products.Sum(x => x.Price),
             };
 
-            context.Orders.Add(order);
-            context.SaveChanges();
+            ordersR.Insert(order);
+            ordersR.Save();
 
             // send order summary email
             //string html = this.viewRender.Render("MailTemplates/OrderSummary", new OrderSummaryModel()
@@ -64,7 +71,7 @@ namespace BusinessLogic.Services
 
         public IEnumerable<OrderDto> GetAllByUser(string userId)
         {
-            var items = context.Orders.Where(x => x.UserId == userId).ToList();
+            var items = ordersR.Get(x => x.UserId == userId);
             return mapper.Map<IEnumerable<OrderDto>>(items);
         }
     }
