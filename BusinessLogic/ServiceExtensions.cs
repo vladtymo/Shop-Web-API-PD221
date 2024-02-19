@@ -24,9 +24,9 @@ namespace BusinessLogic
 
         public static void AddFluentValidator(this IServiceCollection services)
         {
-            services.AddFluentValidationAutoValidation();
+            //services.AddFluentValidationAutoValidation();
             // enable client-side validation
-            services.AddFluentValidationClientsideAdapters();
+            //services.AddFluentValidationClientsideAdapters();
             // Load an assembly reference rather than using a marker type.
             services.AddValidatorsFromAssemblies(AppDomain.CurrentDomain.GetAssemblies());
         }

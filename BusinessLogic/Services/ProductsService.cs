@@ -5,10 +5,13 @@ using BusinessLogic.Models;
 using DataAccess.Data;
 using DataAccess.Data.Entities;
 using DataAccess.Repositories;
+using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -55,9 +58,11 @@ namespace BusinessLogic.Services
 
         public void Delete(int id)
         {
+            if (id < 0) throw new HttpException("Id can not be negative.", HttpStatusCode.BadRequest);
+
             // delete by id
             var product = productsRepo.GetByID(id);
-            if (product == null) return; // TODO: throw exceptions
+            if (product == null) throw new HttpException("Product not found.", HttpStatusCode.NotFound);
 
             productsRepo.Delete(product);
             productsRepo.Save();
@@ -74,11 +79,13 @@ namespace BusinessLogic.Services
 
         public ProductDto? Get(int id)
         {
+            if (id < 0) throw new HttpException("Id can not be negative.", HttpStatusCode.BadRequest);
+
             // with JOIN operators
             //var product = context.Products.Include(x => x.Category).FirstOrDefault(i => i.Id == id);
             // without JOIN operators
             var product = productsRepo.GetByID(id);
-            if (product == null) return null; // TODO: throw exceptions
+            if (product == null) throw new HttpException("Product not found.", HttpStatusCode.NotFound);
 
             // TODO: add include properties
 

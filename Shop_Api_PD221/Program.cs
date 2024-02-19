@@ -1,5 +1,6 @@
 using BusinessLogic;
 using DataAccess;
+using FluentValidation.AspNetCore;
 using Shop_Api_PD221;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -38,6 +39,8 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+
+app.UseMiddleware<GlobalExceptionHandlerMiddleware>();
 
 app.UseAuthorization();
 
