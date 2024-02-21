@@ -1,6 +1,7 @@
 using BusinessLogic;
 using DataAccess;
 using FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.Hosting;
 using Shop_Api_PD221;
 
 var builder = WebApplication.CreateBuilder(args);
