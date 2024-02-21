@@ -22,20 +22,26 @@ namespace BusinessLogic.Services
         private readonly IMapper mapper;
         private readonly IRepository<Product> productsRepo;
         private readonly IRepository<Category> categoriesRepo;
+        private readonly IValidator<CreateProductModel> validator;
 
         //private readonly ShopDbContext context;
 
-        public ProductsService(IMapper mapper, 
+        public ProductsService(IMapper mapper,
                                 IRepository<Product> productsRepo,
-                                IRepository<Category> categoriesRepo/*ShopDbContext context*/)
+                                IRepository<Category> categoriesRepo/*ShopDbContext context*/,
+                                IValidator<CreateProductModel> validator)
         {
             this.mapper = mapper;
             this.productsRepo = productsRepo;
             this.categoriesRepo = categoriesRepo;
+            this.validator = validator;
         }
 
         public void Create(CreateProductModel model)
         {
+            //if (validator.Validate(model).) throw new HttpException(HttpStatusCode.BadRequest, validator.);
+            validator.ValidateAndThrow(model);
+
             // convert model to entity type
             // 1 - manually
             //var entity = new Product()

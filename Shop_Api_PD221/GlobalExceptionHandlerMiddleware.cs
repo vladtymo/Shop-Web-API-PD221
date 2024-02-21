@@ -24,10 +24,10 @@ namespace Shop_Api_PD221
             {
                 await CreateResponse(context, httpError.Status, httpError.Message);
             }
-            catch (ValidationException validationError)
-            {
-                await CreateResponse(context, HttpStatusCode.BadRequest, validationError.Message);
-            }
+            //catch (ValidationException validationError)
+            //{
+            //    await CreateResponse(context, HttpStatusCode.BadRequest, validationError.Message);
+            //}
             catch (KeyNotFoundException error)
             {
                 await CreateResponse(context, HttpStatusCode.NotFound, error.Message);
