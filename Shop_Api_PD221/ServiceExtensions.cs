@@ -1,7 +1,8 @@
-﻿using BusinessLogic.Interfaces;
-using Shop_Api_PD221.Services;
+﻿using Core.Interfaces;
+using Microsoft.AspNetCore.Mvc;
+using WebApi.Services;
 
-namespace Shop_Api_PD221
+namespace WebApi
 {
     public static class ServiceExtensions
     {
@@ -9,6 +10,14 @@ namespace Shop_Api_PD221
         {
             services.AddScoped<ICartService, CartService>();
             //services.AddScoped<IViewRender, ViewRender>();
+        }
+
+        public static void DisableAutoDataAnnotationValidation(this IServiceCollection services)
+        {
+            services.Configure<ApiBehaviorOptions>(options =>
+            {
+                options.SuppressModelStateInvalidFilter = true;
+            });
         }
     }
 }

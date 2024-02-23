@@ -1,8 +1,7 @@
-﻿using BusinessLogic.Models;
+﻿using Core.Models;
 using FluentValidation;
-using Microsoft.AspNetCore.Http;
 
-namespace BusinessLogic.Validators
+namespace Core.Validators
 {
     public class CreateProductValidator : AbstractValidator<CreateProductModel>
     {

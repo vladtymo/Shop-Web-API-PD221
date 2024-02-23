@@ -1,11 +1,12 @@
-﻿using DataAccess.Data;
-using DataAccess.Data.Entities;
-using DataAccess.Repositories;
+﻿using Core.Entities;
+using Core.Interfaces;
+using Infrastructure.Data;
+using Infrastructure.Repositories;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace DataAccess
+namespace Infrastructure
 {
     public static class ServiceExtensions
     {

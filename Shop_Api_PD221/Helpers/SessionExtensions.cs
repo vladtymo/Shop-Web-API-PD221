@@ -1,6 +1,6 @@
 ﻿using System.Text.Json;
 
-namespace Shop_Api_PD221.Helpers
+namespace WebApi.Helpers
 {
     public static class SessionExtensions
     {

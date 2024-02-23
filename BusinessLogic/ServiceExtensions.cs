@@ -1,13 +1,12 @@
 ﻿using AutoMapper;
-using BusinessLogic.Interfaces;
-using BusinessLogic.Mapping;
-using BusinessLogic.Services;
+using Core.Interfaces;
+using Core.Mapping;
+using Core.Services;
 using FluentValidation;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.Extensions.DependencyInjection;
-using MVC_pd221.Validators;
 
-namespace BusinessLogic
+namespace Core
 {
     public static class ServiceExtensions
     {

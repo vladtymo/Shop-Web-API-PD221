@@ -1,8 +1,8 @@
-﻿using DataAccess.Data.Entities;
+﻿using Core.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace DataAccess.Data.Configurations
+namespace Infrastructure.Data.Configurations
 {
     public class CategoryEntityConfigs : IEntityTypeConfiguration<Category>
     {

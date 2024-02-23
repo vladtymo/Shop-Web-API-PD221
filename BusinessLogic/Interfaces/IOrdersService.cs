@@ -1,7 +1,6 @@
-﻿using BusinessLogic.DTOs;
-using BusinessLogic.Models;
+﻿using Core.DTOs;
 
-namespace BusinessLogic.Interfaces
+namespace Core.Interfaces
 {
     public interface IOrdersService
     {

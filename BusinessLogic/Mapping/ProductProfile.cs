@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
-using BusinessLogic.DTOs;
-using BusinessLogic.Interfaces;
-using BusinessLogic.Models;
-using DataAccess.Data.Entities;
+using Core.DTOs;
+using Core.Entities;
+using Core.Interfaces;
+using Core.Models;
 
-namespace BusinessLogic.Mapping
+namespace Core.Mapping
 {
     public class ProductProfile : Profile
     {

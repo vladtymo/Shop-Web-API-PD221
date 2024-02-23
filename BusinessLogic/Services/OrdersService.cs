@@ -1,14 +1,11 @@
 ﻿using AutoMapper;
-using BusinessLogic.DTOs;
-using BusinessLogic.Interfaces;
-using BusinessLogic.Models;
-using DataAccess.Data;
-using DataAccess.Data.Entities;
-using DataAccess.Repositories;
+using Core.DTOs;
+using Core.Entities;
+using Core.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 
-namespace BusinessLogic.Services
+namespace Core.Services
 {
     internal class OrdersService : IOrdersService
     {

@@ -1,7 +1,7 @@
-﻿using DataAccess.Data.Entities;
+﻿using Core.Entities;
 using FluentValidation;
 
-namespace BusinessLogic.Validators
+namespace Core.Validators
 {
     public class CategoryValidator : AbstractValidator<Category>
     {

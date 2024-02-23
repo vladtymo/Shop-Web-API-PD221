@@ -1,8 +1,9 @@
-﻿using DataAccess.Data;
+﻿using Core.Interfaces;
+using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
-namespace DataAccess.Repositories
+namespace Infrastructure.Repositories
 {
     internal class Repository<TEntity> : IRepository<TEntity> where TEntity : class
     {

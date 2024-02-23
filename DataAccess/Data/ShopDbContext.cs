@@ -1,10 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using DataAccess.Data.Entities;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using System.Reflection;
-using DataAccess.Data.Configurations;
+using Core.Entities;
 
-namespace DataAccess.Data
+namespace Infrastructure.Data
 {
     internal class ShopDbContext : IdentityDbContext<User>
     {

@@ -1,17 +1,11 @@
-﻿using BusinessLogic.Utilities;
+﻿using Core.Utilities;
 using Mailjet.Client;
 using Mailjet.Client.Resources;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json.Linq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
-namespace BusinessLogic.Services
+namespace Core.Services
 {
     internal class MailJetSender : IEmailSender
     {

@@ -1,7 +1,7 @@
 ﻿using System.Net;
 using System.Runtime.Serialization;
 
-namespace BusinessLogic
+namespace Core.Exceptions
 {
     [Serializable]
     public class HttpException : Exception

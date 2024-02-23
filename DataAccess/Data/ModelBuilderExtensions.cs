@@ -1,14 +1,7 @@
-﻿using DataAccess.Data.Entities;
+﻿using Core.Entities;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection.Emit;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace DataAccess.Data
+namespace Infrastructure.Data
 {
     public static class ModelBuilderExtensions
     {

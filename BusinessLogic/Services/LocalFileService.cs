@@ -1,8 +1,8 @@
-﻿using BusinessLogic.Interfaces;
+﻿using Core.Interfaces;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 
-namespace BusinessLogic.Services
+namespace Core.Services
 {
     public class LocalFileService : IFileService
     {

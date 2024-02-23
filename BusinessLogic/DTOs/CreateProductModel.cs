@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 
-namespace BusinessLogic.Models
+namespace Core.Models
 {
     public class CreateProductModel
     {

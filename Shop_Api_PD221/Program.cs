@@ -1,9 +1,6 @@
-using BusinessLogic;
-using DataAccess;
-using FluentValidation;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
-using Shop_Api_PD221;
+using Core;
+using Infrastructure;
+using WebApi;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,11 +9,7 @@ string connStr = builder.Configuration.GetConnectionString("LocalDb")!;
 // Add services to the container.
 
 builder.Services.AddControllers();
-
-builder.Services.Configure<ApiBehaviorOptions>(options =>
-{
-    options.SuppressModelStateInvalidFilter = true;
-});
+builder.Services.DisableAutoDataAnnotationValidation();
 
 builder.Services.AddDbContext(connStr);
 builder.Services.AddIdentity();

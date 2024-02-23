@@ -1,9 +1,9 @@
-﻿using BusinessLogic;
+﻿using Core.Exceptions;
 using FluentValidation;
 using System.Net;
 using System.Text.Json;
 
-namespace Shop_Api_PD221
+namespace WebApi
 {
     public class GlobalExceptionHandlerMiddleware
     {

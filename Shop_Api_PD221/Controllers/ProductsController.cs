@@ -1,9 +1,8 @@
-﻿using BusinessLogic.Interfaces;
-using BusinessLogic.Models;
-using Microsoft.AspNetCore.Http;
+﻿using Core.Interfaces;
+using Core.Models;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Shop_Api_PD221.Controllers
+namespace WebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

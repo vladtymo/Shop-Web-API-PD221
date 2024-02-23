@@ -1,21 +1,13 @@
 ﻿using AutoMapper;
-using BusinessLogic.DTOs;
-using BusinessLogic.Interfaces;
-using BusinessLogic.Models;
-using DataAccess.Data;
-using DataAccess.Data.Entities;
-using DataAccess.Repositories;
+using Core.DTOs;
+using Core.Entities;
+using Core.Exceptions;
+using Core.Interfaces;
+using Core.Models;
 using FluentValidation;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace BusinessLogic.Services
+namespace Core.Services
 {
     internal class ProductsService : IProductsService
     {

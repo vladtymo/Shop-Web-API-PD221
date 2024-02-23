@@ -1,4 +1,4 @@
-﻿using BusinessLogic.Interfaces;
+﻿using Core.Interfaces;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Abstractions;
 
-namespace Shop_Api_PD221.Services
+namespace WebApi.Services
 {
     public class ViewRender : IViewRender
     {

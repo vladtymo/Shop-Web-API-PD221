@@ -1,4 +1,4 @@
-﻿using DataAccess.Data.Entities;
+﻿using Core.Entities;
 using FluentValidation;
 
 namespace MVC_pd221.Validators

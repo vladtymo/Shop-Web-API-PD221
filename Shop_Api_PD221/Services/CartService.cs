@@ -1,12 +1,8 @@
-﻿using BusinessLogic.DTOs;
-using BusinessLogic.Interfaces;
-using Microsoft.AspNetCore.Http;
-using Newtonsoft.Json.Linq;
-using Shop_Api_PD221.Helpers;
-using System.Collections.Generic;
-using System.Text.Json;
+﻿using Core.DTOs;
+using Core.Interfaces;
+using WebApi.Helpers;
 
-namespace Shop_Api_PD221.Services
+namespace WebApi.Services
 {
     public class CartService : ICartService
     {

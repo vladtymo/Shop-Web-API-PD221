@@ -18,4 +18,8 @@
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="8.0.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\BusinessLogic\Core.csproj" />
+  </ItemGroup>
+
 </Project>

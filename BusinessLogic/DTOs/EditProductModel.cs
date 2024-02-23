@@ -1,4 +1,4 @@
-﻿namespace BusinessLogic.Models
+﻿namespace Core.Models
 {
     public class EditProductModel
     {

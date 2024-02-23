@@ -1,7 +1,7 @@
-﻿using DataAccess.Data.Entities;
+﻿using Core.Entities;
 using Microsoft.AspNetCore.Identity;
 
-namespace Shop_Api_PD221.Helpers
+namespace WebApi.Helpers
 {
     public enum Roles
     {
