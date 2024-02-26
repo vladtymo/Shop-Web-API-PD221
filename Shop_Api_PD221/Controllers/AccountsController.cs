@@ -24,14 +24,16 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost("login")]
-        public IActionResult Login()
+        public async Task<IActionResult> Login(LoginModel model)
         {
+            await accountsService.Login(model);
             return Ok();
         }
 
         [HttpPost("logout")]
-        public IActionResult Logout()
+        public async Task<IActionResult> Logout()
         {
+            await accountsService.Logout();
             return Ok();
         }
     }

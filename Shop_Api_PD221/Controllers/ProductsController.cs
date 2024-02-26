@@ -1,5 +1,6 @@
 ﻿using Core.Interfaces;
 using Core.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Controllers
@@ -21,6 +22,7 @@ namespace WebApi.Controllers
             return Ok(productsService.GetAll());
         }
 
+        [Authorize]
         [HttpGet("{id:int}")] // view/1
         public IActionResult Get([FromRoute] int id)
         {

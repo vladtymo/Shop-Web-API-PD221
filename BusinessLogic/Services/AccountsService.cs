@@ -17,14 +17,17 @@ namespace Core.Services
     internal class AccountsService : IAccountsService
     {
         private readonly UserManager<User> userManager;
+        private readonly SignInManager<User> signInManager;
         private readonly IMapper mapper;
         private readonly IValidator<RegisterModel> registerValidator;
 
         public AccountsService(UserManager<User> userManager, 
+                                SignInManager<User> signInManager,
                                 IMapper mapper, 
                                 IValidator<RegisterModel> registerValidator)
         {
             this.userManager = userManager;
+            this.signInManager = signInManager;
             this.mapper = mapper;
             this.registerValidator = registerValidator;
         }
@@ -44,14 +47,19 @@ namespace Core.Services
                 throw new HttpException(string.Join(" ", result.Errors.Select(x => x.Description)), HttpStatusCode.BadRequest);
         }
 
-        public Task Login()
+        public async Task Login(LoginModel model)
         {
-            throw new NotImplementedException();
+            var user = await userManager.FindByEmailAsync(model.Email);
+
+            if (user == null || !await userManager.CheckPasswordAsync(user, model.Password))
+                throw new HttpException("Invalid login or password.", HttpStatusCode.BadRequest);
+
+            await signInManager.SignInAsync(user, true);
         }
 
-        public Task Logout()
+        public async Task Logout()
         {
-            throw new NotImplementedException();
+            await signInManager.SignOutAsync();
         }
     }
 }
