@@ -3,6 +3,7 @@ using Core.DTOs;
 using Core.Entities;
 using Core.Exceptions;
 using Core.Interfaces;
+using FluentValidation;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
@@ -17,16 +18,20 @@ namespace Core.Services
     {
         private readonly UserManager<User> userManager;
         private readonly IMapper mapper;
+        private readonly IValidator<RegisterModel> registerValidator;
 
-        public AccountsService(UserManager<User> userManager, IMapper mapper)
+        public AccountsService(UserManager<User> userManager, 
+                                IMapper mapper, 
+                                IValidator<RegisterModel> registerValidator)
         {
             this.userManager = userManager;
             this.mapper = mapper;
+            this.registerValidator = registerValidator;
         }
 
         public async Task Register(RegisterModel model)
         {
-            // TODO: validate
+            registerValidator.ValidateAndThrow(model);
 
             if (await userManager.FindByEmailAsync(model.Email) != null)
                 throw new HttpException("Email is already exists.", HttpStatusCode.BadRequest);
