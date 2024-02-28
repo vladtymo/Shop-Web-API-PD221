@@ -20,16 +20,19 @@ namespace Core.Services
         private readonly SignInManager<User> signInManager;
         private readonly IMapper mapper;
         private readonly IValidator<RegisterModel> registerValidator;
+        private readonly IJwtService jwtService;
 
         public AccountsService(UserManager<User> userManager, 
                                 SignInManager<User> signInManager,
                                 IMapper mapper, 
-                                IValidator<RegisterModel> registerValidator)
+                                IValidator<RegisterModel> registerValidator,
+                                IJwtService jwtService)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
             this.mapper = mapper;
             this.registerValidator = registerValidator;
+            this.jwtService = jwtService;
         }
 
         public async Task Register(RegisterModel model)
@@ -47,7 +50,7 @@ namespace Core.Services
                 throw new HttpException(string.Join(" ", result.Errors.Select(x => x.Description)), HttpStatusCode.BadRequest);
         }
 
-        public async Task Login(LoginModel model)
+        public async Task<LoginResponseDto> Login(LoginModel model)
         {
             var user = await userManager.FindByEmailAsync(model.Email);
 
@@ -55,6 +58,11 @@ namespace Core.Services
                 throw new HttpException("Invalid login or password.", HttpStatusCode.BadRequest);
 
             await signInManager.SignInAsync(user, true);
+
+            return new LoginResponseDto()
+            {
+                Token = jwtService.CreateToken(jwtService.GetClaims(user))
+            };
         }
 
         public async Task Logout()

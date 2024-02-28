@@ -34,6 +34,7 @@ namespace Core
         public static void AddCustomServices(this IServiceCollection services)
         {
             services.AddScoped<IProductsService, ProductsService>();
+            services.AddScoped<IJwtService, JwtService>();
             services.AddScoped<IAccountsService, AccountsService>();
             services.AddScoped<IOrdersService, OrdersService>();
             services.AddScoped<IFileService, LocalFileService>();

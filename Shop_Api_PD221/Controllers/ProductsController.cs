@@ -1,5 +1,6 @@
 ﻿using Core.Interfaces;
 using Core.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -22,7 +23,9 @@ namespace WebApi.Controllers
             return Ok(productsService.GetAll());
         }
 
-        [Authorize]
+        //[Authorize] // based on cookies
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)] // based on JWT
+
         [HttpGet("{id:int}")] // view/1
         public IActionResult Get([FromRoute] int id)
         {

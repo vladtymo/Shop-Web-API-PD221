@@ -14,6 +14,7 @@ builder.Services.DisableAutoDataAnnotationValidation();
 builder.Services.AddDbContext(connStr);
 builder.Services.AddIdentity();
 builder.Services.AddRepositories();
+builder.Services.AddJWT(builder.Configuration);
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -42,6 +43,7 @@ app.UseStaticFiles();
 
 app.UseMiddleware<GlobalExceptionHandlerMiddleware>();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

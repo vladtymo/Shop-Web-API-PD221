@@ -27,7 +27,7 @@ namespace Infrastructure
             {
                 options.SignIn.RequireConfirmedAccount = false;
             })
-               .AddDefaultTokenProviders()
+               //.AddDefaultTokenProviders()
                .AddEntityFrameworkStores<ShopDbContext>();
         }
     }
