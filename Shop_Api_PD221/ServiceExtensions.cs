@@ -2,16 +2,19 @@
 using Core.Interfaces;
 using Core.Utilities;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using WebApi.Services;
+using WebAPI.Policies;
 
 namespace WebApi
 {
     public static class Policies
     {
         public const string PREMIUM_CLIENT = "PremiumClient";
+        public const string ADULT = "Adult";
     }
     public static class ServiceExtensions
     {
@@ -52,7 +55,17 @@ namespace WebApi
             {
                 options.AddPolicy(Policies.PREMIUM_CLIENT, policy =>
                     policy.RequireClaim("ClientType", ClientType.Premium.ToString()));
+
+                options.AddPolicy(Policies.ADULT, policy =>
+                    policy.AddRequirements(new MinimumAgeRequirement(18)));
             });
+
+            services.AddAuthorizationHandles();
+        }
+
+        public static void AddAuthorizationHandles(this IServiceCollection services)
+        {
+            services.AddSingleton<IAuthorizationHandler, MinimumAgeHandler>();
         }
     }
 }

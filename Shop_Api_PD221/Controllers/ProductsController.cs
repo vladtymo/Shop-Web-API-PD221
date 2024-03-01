@@ -19,6 +19,7 @@ namespace WebApi.Controllers
         }
 
         [HttpGet]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = Policies.ADULT)]
         public IActionResult GetAll()
         {
             return Ok(productsService.GetAll());
