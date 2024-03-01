@@ -1,4 +1,5 @@
-﻿using Core.Interfaces;
+﻿using Core.Entities;
+using Core.Interfaces;
 using Core.Utilities;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
@@ -8,6 +9,10 @@ using WebApi.Services;
 
 namespace WebApi
 {
+    public static class Policies
+    {
+        public const string PREMIUM_CLIENT = "PremiumClient";
+    }
     public static class ServiceExtensions
     {
         public static void AddCartService(this IServiceCollection services)
@@ -43,7 +48,11 @@ namespace WebApi
                     };
                 });
 
-            services.AddAuthorization();
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy(Policies.PREMIUM_CLIENT, policy =>
+                    policy.RequireClaim("ClientType", ClientType.Premium.ToString()));
+            });
         }
     }
 }

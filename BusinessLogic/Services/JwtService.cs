@@ -17,10 +17,12 @@ namespace Core.Services
     internal class JwtService : IJwtService
     {
         private readonly IConfiguration configuration;
+        private readonly UserManager<User> userManager;
 
-        public JwtService(IConfiguration configuration)
+        public JwtService(IConfiguration configuration, UserManager<User> userManager)
         {
             this.configuration = configuration;
+            this.userManager = userManager;
         }
 
         public IEnumerable<Claim> GetClaims(User user)
@@ -29,10 +31,11 @@ namespace Core.Services
             {
                 new Claim(ClaimTypes.NameIdentifier, user.Id),
                 new Claim(ClaimTypes.Name, user.UserName),
+                new Claim("ClientType", user.ClientType.ToString()),
             };
 
-            //var roles = userManager.GetRolesAsync(user).Result;
-            //claims.AddRange(roles.Select(role => new Claim(ClaimsIdentity.DefaultRoleClaimType, role)));
+            var roles = userManager.GetRolesAsync(user).Result;
+            claims.AddRange(roles.Select(role => new Claim(ClaimsIdentity.DefaultRoleClaimType, role)));
 
             return claims;
         }

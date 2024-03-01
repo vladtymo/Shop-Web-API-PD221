@@ -10,6 +10,7 @@ namespace Infrastructure.Data.Configurations
         {
             builder.HasKey(x => x.Id);
             builder.ToTable("Orders");
+            builder.Property(x => x.TotalPrice).HasColumnType("money");
         }
     }
 }

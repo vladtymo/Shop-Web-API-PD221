@@ -34,6 +34,7 @@ namespace WebApi.Controllers
         }
 
         [HttpPost]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = Policies.PREMIUM_CLIENT)]
         public IActionResult Create([FromForm] CreateProductModel model)
         {
             productsService.Create(model);

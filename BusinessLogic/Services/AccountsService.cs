@@ -57,7 +57,7 @@ namespace Core.Services
             if (user == null || !await userManager.CheckPasswordAsync(user, model.Password))
                 throw new HttpException("Invalid login or password.", HttpStatusCode.BadRequest);
 
-            await signInManager.SignInAsync(user, true);
+            //await signInManager.SignInAsync(user, true);
 
             return new LoginResponseDto()
             {
@@ -67,7 +67,7 @@ namespace Core.Services
 
         public async Task Logout()
         {
-            await signInManager.SignOutAsync();
+            //await signInManager.SignOutAsync();
         }
     }
 }
