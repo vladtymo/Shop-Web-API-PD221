@@ -1,12 +1,13 @@
 ﻿using Core.Entities;
 using Microsoft.AspNetCore.Identity;
+using System.Reflection;
 
 namespace WebApi.Helpers
 {
-    public enum Roles
+    public static class Roles
     {
-        User,
-        Admin
+        public const string Admin = "Admin";
+        public const string User = "User";
     }
 
     public static class Seeder
@@ -15,7 +16,10 @@ namespace WebApi.Helpers
         {
             var roleManager = app.GetRequiredService<RoleManager<IdentityRole>>();
 
-            foreach (var role in Enum.GetNames(typeof(Roles)))
+            var roles = typeof(Roles).GetFields(BindingFlags.Public | BindingFlags.Static |
+               BindingFlags.FlattenHierarchy).Select(x => (string)x.GetValue(null)!);
+
+            foreach (var role in roles)
             {
                 if (!await roleManager.RoleExistsAsync(role))
                 {

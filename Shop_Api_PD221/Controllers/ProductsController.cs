@@ -3,6 +3,7 @@ using Core.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using WebApi.Helpers;
 
 namespace WebApi.Controllers
 {
@@ -46,6 +47,7 @@ namespace WebApi.Controllers
             return Ok();
         }
 
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = Roles.Admin)]
         [HttpDelete("{id:int}")]
         public IActionResult Delete([FromRoute] int id)
         {
