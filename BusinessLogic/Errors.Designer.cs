@@ -70,6 +70,15 @@ namespace Core {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Invalid token..
+        /// </summary>
+        internal static string InvalidToken {
+            get {
+                return ResourceManager.GetString("InvalidToken", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Product not found..
         /// </summary>
         internal static string ProductNotFound {

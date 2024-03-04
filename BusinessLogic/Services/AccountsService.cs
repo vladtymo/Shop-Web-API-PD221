@@ -21,18 +21,21 @@ namespace Core.Services
         private readonly IMapper mapper;
         private readonly IValidator<RegisterModel> registerValidator;
         private readonly IJwtService jwtService;
+        private readonly IRepository<RefreshToken> refreshTokenR;
 
         public AccountsService(UserManager<User> userManager, 
                                 SignInManager<User> signInManager,
                                 IMapper mapper, 
                                 IValidator<RegisterModel> registerValidator,
-                                IJwtService jwtService)
+                                IJwtService jwtService,
+                                IRepository<RefreshToken> refreshTokenR)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
             this.mapper = mapper;
             this.registerValidator = registerValidator;
             this.jwtService = jwtService;
+            this.refreshTokenR = refreshTokenR;
         }
 
         public async Task Register(RegisterModel model)
@@ -61,13 +64,64 @@ namespace Core.Services
 
             return new LoginResponseDto()
             {
-                Token = jwtService.CreateToken(jwtService.GetClaims(user))
+                AccessToken = jwtService.CreateToken(jwtService.GetClaims(user)),
+                RefreshToken = CreateRefreshToken(user.Id).Token
             };
         }
 
-        public async Task Logout()
+        private RefreshToken CreateRefreshToken(string userId)
+        {
+            var refeshToken = jwtService.CreateRefreshToken();
+
+            var refreshTokenEntity = new RefreshToken
+            {
+                Token = refeshToken,
+                UserId = userId,
+                CreationDate = DateTime.UtcNow // Now vs UtcNow
+            };
+
+            refreshTokenR.Insert(refreshTokenEntity);
+            refreshTokenR.Save();
+
+            return refreshTokenEntity;
+        }
+
+        public void Logout(string refreshToken)
         {
             //await signInManager.SignOutAsync();
+
+            var refrestTokenEntity = refreshTokenR.Get(x => x.Token == refreshToken).FirstOrDefault();
+
+            if (refrestTokenEntity == null)
+                throw new HttpException(Errors.InvalidToken, HttpStatusCode.BadRequest);
+
+            refreshTokenR.Delete(refrestTokenEntity);
+            refreshTokenR.Save();
+        }
+
+        public UserTokens RefreshTokens(UserTokens userTokens)
+        {
+            var refrestToken = refreshTokenR.Get(x => x.Token == userTokens.RefreshToken).FirstOrDefault();
+
+            if (refrestToken == null)
+                throw new HttpException(Errors.InvalidToken, HttpStatusCode.BadRequest);
+
+            var claims = jwtService.GetClaimsFromExpiredToken(userTokens.AccessToken);
+            var newAccessToken = jwtService.CreateToken(claims);
+            var newRefreshToken = jwtService.CreateRefreshToken();
+
+            refrestToken.Token = newRefreshToken;
+
+            refreshTokenR.Update(refrestToken);
+            refreshTokenR.Save();
+
+            var tokens = new UserTokens()
+            {
+                AccessToken = newAccessToken,
+                RefreshToken = newRefreshToken
+            };
+
+            return tokens;
         }
     }
 }

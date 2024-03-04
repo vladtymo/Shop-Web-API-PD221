@@ -120,6 +120,9 @@
   <data name="IdCanNotBeNegative" xml:space="preserve">
     <value>Id can not be negative.</value>
   </data>
+  <data name="InvalidToken" xml:space="preserve">
+    <value>Invalid token.</value>
+  </data>
   <data name="ProductNotFound" xml:space="preserve">
     <value>Product not found.</value>
   </data>

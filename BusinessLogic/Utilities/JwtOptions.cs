@@ -10,6 +10,7 @@ namespace Core.Utilities
     {
         public string Issuer { get; set; }
         public string Key { get; set; }
-        public int Lifetime { get; set; } // minutes
+        public int AccessTokenLifetimeInMinutes { get; set; }
+        public int RefreshTokenLifetimeInDays { get; set; }
     }
 }

@@ -6,7 +6,9 @@ namespace Core.Interfaces
     {
         Task Register(RegisterModel model);
         Task<LoginResponseDto> Login(LoginModel model);
-        Task Logout();
+        UserTokens RefreshTokens(UserTokens tokens);
+        void Logout(string refreshToken);
+
         //Task<ResetPasswordResponse> ResetPasswordRequest(string email);
         //Task ResetPassword(ResetPasswordModel model);
     }
