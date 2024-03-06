@@ -3,6 +3,7 @@ using Core.DTOs;
 using Core.Entities;
 using Core.Exceptions;
 using Core.Interfaces;
+using Core.Specifications;
 using FluentValidation;
 using Microsoft.AspNetCore.Identity;
 using System;
@@ -86,11 +87,11 @@ namespace Core.Services
             return refreshTokenEntity;
         }
 
-        public void Logout(string refreshToken)
+        public async Task Logout(string refreshToken)
         {
             //await signInManager.SignOutAsync();
 
-            var refrestTokenEntity = refreshTokenR.Get(x => x.Token == refreshToken).FirstOrDefault();
+            var refrestTokenEntity = await refreshTokenR.GetItemBySpec(new RefreshTokenSpecs.ByToken(refreshToken));
 
             if (refrestTokenEntity == null)
                 throw new HttpException(Errors.InvalidToken, HttpStatusCode.BadRequest);
@@ -99,9 +100,9 @@ namespace Core.Services
             refreshTokenR.Save();
         }
 
-        public UserTokens RefreshTokens(UserTokens userTokens)
+        public async Task<UserTokens> RefreshTokens(UserTokens userTokens)
         {
-            var refrestToken = refreshTokenR.Get(x => x.Token == userTokens.RefreshToken).FirstOrDefault();
+            var refrestToken = await refreshTokenR.GetItemBySpec(new RefreshTokenSpecs.ByToken(userTokens.RefreshToken));
 
             if (refrestToken == null)
                 throw new HttpException(Errors.InvalidToken, HttpStatusCode.BadRequest);

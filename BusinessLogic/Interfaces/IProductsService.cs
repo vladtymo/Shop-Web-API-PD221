@@ -5,9 +5,9 @@ namespace Core.Interfaces
 {
     public interface IProductsService
     {
-        IEnumerable<ProductDto> GetAll();
-        IEnumerable<ProductDto> Get(IEnumerable<int> ids);
-        ProductDto? Get(int id);
+        Task<IEnumerable<ProductDto>> GetAll();
+        Task<IEnumerable<ProductDto>> Get(IEnumerable<int> ids);
+        Task<ProductDto?> Get(int id);
         int GetCount();
         IEnumerable<CategoryDto> GetAllCategories();
         void Create(CreateProductModel model);

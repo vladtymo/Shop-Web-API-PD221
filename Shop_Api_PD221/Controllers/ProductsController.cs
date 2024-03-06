@@ -20,18 +20,18 @@ namespace WebApi.Controllers
 
         [HttpGet]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = Policies.ADULT)]
-        public IActionResult GetAll()
+        public async Task<IActionResult> GetAll()
         {
-            return Ok(productsService.GetAll());
+            return Ok(await productsService.GetAll());
         }
 
         //[Authorize] // based on cookies
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)] // based on JWT
 
         [HttpGet("{id:int}")] // view/1
-        public IActionResult Get([FromRoute] int id)
+        public async Task<IActionResult> Get([FromRoute] int id)
         {
-            return Ok(productsService.Get(id));
+            return Ok(await productsService.Get(id));
         }
 
         [HttpPost]

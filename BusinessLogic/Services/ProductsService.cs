@@ -4,6 +4,7 @@ using Core.Entities;
 using Core.Exceptions;
 using Core.Interfaces;
 using Core.Models;
+using Core.Specifications;
 using FluentValidation;
 using System.Net;
 
@@ -59,7 +60,7 @@ namespace Core.Services
             if (id < 0) throw new HttpException(Errors.IdCanNotBeNegative, HttpStatusCode.BadRequest);
 
             // delete by id
-            var product = productsRepo.GetByID(id);
+            var product = productsRepo.GetById(id);
             if (product == null) throw new HttpException(Errors.ProductNotFound, HttpStatusCode.NotFound);
 
             productsRepo.Delete(product);
@@ -75,14 +76,14 @@ namespace Core.Services
             productsRepo.Save();
         }
 
-        public ProductDto? Get(int id)
+        public async Task<ProductDto?> Get(int id)
         {
             if (id < 0) throw new HttpException(Errors.IdCanNotBeNegative, HttpStatusCode.BadRequest);
 
             // with JOIN operators
             //var product = context.Products.Include(x => x.Category).FirstOrDefault(i => i.Id == id);
             // without JOIN operators
-            var product = productsRepo.GetByID(id);
+            var product = await productsRepo.GetItemBySpec(new ProductSpecs.ById(id));
             if (product == null) throw new HttpException(Errors.ProductNotFound, HttpStatusCode.NotFound);
 
             // TODO: add include properties
@@ -93,29 +94,29 @@ namespace Core.Services
             return mapper.Map<ProductDto>(product);
         }
 
-        public IEnumerable<ProductDto> Get(IEnumerable<int> ids)
+        public async Task<IEnumerable<ProductDto>> Get(IEnumerable<int> ids)
         {
             //return mapper.Map<List<ProductDto>>(context.Products
             //    .Include(x => x.Category)
             //    .Where(x => ids.Contains(x.Id))
             //    .ToList());
 
-            return mapper.Map<List<ProductDto>>(productsRepo.Get(x => ids.Contains(x.Id), includeProperties: "Category"));
+            return mapper.Map<List<ProductDto>>(await productsRepo.GetListBySpec(new ProductSpecs.ByIds(ids))); // productsRepo.Get(x => ids.Contains(x.Id), includeProperties: "Category")
         }
 
-        public IEnumerable<ProductDto> GetAll()
+        public async Task<IEnumerable<ProductDto>> GetAll()
         {
-            return mapper.Map<List<ProductDto>>(productsRepo.Get(includeProperties: "Category"));
+            return mapper.Map<List<ProductDto>>(await productsRepo.GetListBySpec(new ProductSpecs.All()));
         }
 
         public IEnumerable<CategoryDto> GetAllCategories()
         {
-            return mapper.Map<List<CategoryDto>>(categoriesRepo.Get());
+            return mapper.Map<List<CategoryDto>>(categoriesRepo.GetAll());
         }
 
         public int GetCount()
         {
-            return productsRepo.Get().Count();
+            return productsRepo.GetAll().Count();
         }
     }
 }

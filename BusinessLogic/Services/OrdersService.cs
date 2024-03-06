@@ -2,6 +2,7 @@
 using Core.DTOs;
 using Core.Entities;
 using Core.Interfaces;
+using Core.Specifications;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 
@@ -40,7 +41,7 @@ namespace Core.Services
         public async Task Create(string userId)
         {
             var ids = cartService.GetProductIds();
-            var products = productsR.Get(x => ids.Contains(x.Id));
+            var products = await productsR.GetListBySpec(new ProductSpecs.ByIds(ids));
 
             User user = await userManager.FindByIdAsync(userId) ?? throw new Exception("User not found!");
 
@@ -68,7 +69,7 @@ namespace Core.Services
 
         public IEnumerable<OrderDto> GetAllByUser(string userId)
         {
-            var items = ordersR.Get(x => x.UserId == userId);
+            var items = ordersR.GetListBySpec(new OrderSpecs.ByUser(userId));
             return mapper.Map<IEnumerable<OrderDto>>(items);
         }
     }

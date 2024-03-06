@@ -45,10 +45,10 @@ namespace WebApi.Services
             SaveItems(ids);
         }
 
-        public IEnumerable<ProductDto> GetProducts()
+        public async Task<IEnumerable<ProductDto>> GetProducts()
         {
             IEnumerable<int> ids = GetItems() ?? Enumerable.Empty<int>();
-            return productsService.Get(ids);
+            return await productsService.Get(ids);
         }
 
         public void Remove(int id)
