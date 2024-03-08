@@ -102,18 +102,18 @@ namespace Core.Services
 
         public async Task<UserTokens> RefreshTokens(UserTokens userTokens)
         {
-            var refrestToken = await refreshTokenR.GetItemBySpec(new RefreshTokenSpecs.ByToken(userTokens.RefreshToken));
+            var refreshToken = await refreshTokenR.GetItemBySpec(new RefreshTokenSpecs.ByToken(userTokens.RefreshToken));
 
-            if (refrestToken == null)
+            if (refreshToken == null || refreshToken.CreationDate < jwtService.GetLastValidRefreshTokenDate())
                 throw new HttpException(Errors.InvalidToken, HttpStatusCode.BadRequest);
 
             var claims = jwtService.GetClaimsFromExpiredToken(userTokens.AccessToken);
             var newAccessToken = jwtService.CreateToken(claims);
             var newRefreshToken = jwtService.CreateRefreshToken();
 
-            refrestToken.Token = newRefreshToken;
+            refreshToken.Token = newRefreshToken;
 
-            refreshTokenR.Update(refrestToken);
+            refreshTokenR.Update(refreshToken);
             refreshTokenR.Save();
 
             var tokens = new UserTokens()
@@ -123,6 +123,18 @@ namespace Core.Services
             };
 
             return tokens;
+        }
+
+        public async Task RemoveExpiredRefreshTokens()
+        {
+            var lastDate = jwtService.GetLastValidRefreshTokenDate();
+            var expiredTokens = await refreshTokenR.GetListBySpec(new RefreshTokenSpecs.ByDate(lastDate));
+
+            foreach (var i in expiredTokens)
+            {
+                refreshTokenR.Delete(i);
+            }
+            refreshTokenR.Save();
         }
     }
 }

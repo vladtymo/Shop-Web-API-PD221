@@ -18,5 +18,6 @@ namespace Core.Interfaces
         // ------- Refresh Token
         string CreateRefreshToken();
         IEnumerable<Claim> GetClaimsFromExpiredToken(string token);
+        DateTime GetLastValidRefreshTokenDate();
     }
 }

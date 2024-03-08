@@ -9,6 +9,8 @@ namespace Core.Interfaces
         Task<UserTokens> RefreshTokens(UserTokens tokens);
         Task Logout(string refreshToken);
 
+        Task RemoveExpiredRefreshTokens();
+
         //Task<ResetPasswordResponse> ResetPasswordRequest(string email);
         //Task ResetPassword(ResetPasswordModel model);
     }

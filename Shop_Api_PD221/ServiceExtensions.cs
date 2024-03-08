@@ -1,6 +1,7 @@
 ﻿using Core.Entities;
 using Core.Interfaces;
 using Core.Utilities;
+using Hangfire;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -22,6 +23,16 @@ namespace WebApi
         {
             services.AddScoped<ICartService, CartService>();
             //services.AddScoped<IViewRender, ViewRender>();
+        }
+
+        public static void AddHangfire(this IServiceCollection services, string connectionString)
+        {
+            services.AddHangfire(config =>
+            {
+                config.UseSqlServerStorage(connectionString);
+            });
+
+            services.AddHangfireServer();
         }
 
         public static void DisableAutoDataAnnotationValidation(this IServiceCollection services)

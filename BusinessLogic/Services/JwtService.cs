@@ -97,5 +97,10 @@ namespace Core.Services
 
             return jwtSecurityToken.Claims;
         }
+
+        public DateTime GetLastValidRefreshTokenDate()
+        {
+            return DateTime.UtcNow.AddDays(-jwtOpts.RefreshTokenLifetimeInDays);
+        }
     }
 }

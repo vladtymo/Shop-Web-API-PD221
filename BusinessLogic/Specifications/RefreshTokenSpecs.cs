@@ -12,5 +12,12 @@ namespace Core.Specifications
                 Query.Where(x => x.Token == value);
             }
         }
+        public class ByDate : Specification<RefreshToken>
+        {
+            public ByDate(DateTime date)
+            {
+                Query.Where(x => x.CreationDate < date);
+            }
+        }
     }
 }

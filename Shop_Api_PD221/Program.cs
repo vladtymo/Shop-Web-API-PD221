@@ -1,7 +1,10 @@
 using Core;
+using Core.Interfaces;
+using Hangfire;
 using Infrastructure;
 using WebApi;
 using WebApi.Helpers;
+using WebAPI;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -30,6 +33,9 @@ builder.Services.AddFluentValidator();
 builder.Services.AddCustomServices();
 builder.Services.AddCartService();
 
+// hangfire
+builder.Services.AddHangfire(connStr);
+
 var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())
@@ -52,6 +58,9 @@ app.UseMiddleware<GlobalExceptionHandlerMiddleware>();
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.UseHangfireDashboard("/dash");
+JobConfigurator.AddJobs();
 
 app.MapControllers();
 
