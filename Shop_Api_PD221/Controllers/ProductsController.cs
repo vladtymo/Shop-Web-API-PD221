@@ -25,6 +25,12 @@ namespace WebApi.Controllers
             return Ok(await productsService.GetAll());
         }
 
+        [HttpGet("categories")]
+        public IActionResult GetCategories()
+        {
+            return Ok(productsService.GetAllCategories());
+        }
+
         //[Authorize] // based on cookies
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)] // based on JWT
 

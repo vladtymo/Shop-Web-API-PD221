@@ -56,6 +56,13 @@ app.UseStaticFiles();
 
 app.UseMiddleware<GlobalExceptionHandlerMiddleware>();
 
+app.UseCors(options =>
+{
+    options.WithOrigins("http://localhost:4200", "http://localhost:55756")
+        .AllowAnyMethod()
+        .AllowAnyHeader();
+});
+
 app.UseAuthentication();
 app.UseAuthorization();
 
