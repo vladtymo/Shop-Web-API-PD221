@@ -4,6 +4,7 @@ using Core.Entities;
 using Core.Exceptions;
 using Core.Interfaces;
 using Core.Specifications;
+using Core.Utilities;
 using FluentValidation;
 using Microsoft.AspNetCore.Identity;
 using System;
@@ -23,13 +24,15 @@ namespace Core.Services
         private readonly IValidator<RegisterModel> registerValidator;
         private readonly IJwtService jwtService;
         private readonly IRepository<RefreshToken> refreshTokenR;
+        private readonly IGoogleAuthService googleAuthService;
 
         public AccountsService(UserManager<User> userManager, 
                                 SignInManager<User> signInManager,
                                 IMapper mapper, 
                                 IValidator<RegisterModel> registerValidator,
                                 IJwtService jwtService,
-                                IRepository<RefreshToken> refreshTokenR)
+                                IRepository<RefreshToken> refreshTokenR,
+                                IGoogleAuthService googleAuthService)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
@@ -37,6 +40,7 @@ namespace Core.Services
             this.registerValidator = registerValidator;
             this.jwtService = jwtService;
             this.refreshTokenR = refreshTokenR;
+            this.googleAuthService = googleAuthService;
         }
 
         public async Task Register(RegisterModel model)
@@ -135,6 +139,24 @@ namespace Core.Services
                 refreshTokenR.Delete(i);
             }
             refreshTokenR.Save();
+        }
+
+        /// <summary>
+        /// Google SignIn 
+        /// </summary>
+        /// <param name="model">the view model</param>
+        /// <returns>Task&lt;BaseResponse&lt;JwtResponseVM&gt;&gt;</returns>
+        public async Task<LoginResponseDto> SignInWithGoogle(GoogleSignInDto model)
+        {
+            var user = await googleAuthService.GoogleSignIn(model);
+
+            // throw HttpException
+
+            return new LoginResponseDto()
+            {
+                AccessToken = jwtService.CreateToken(jwtService.GetClaims(user)),
+                RefreshToken = CreateRefreshToken(user.Id).Token
+            };
         }
     }
 }

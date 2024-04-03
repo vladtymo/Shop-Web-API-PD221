@@ -1,5 +1,6 @@
 using Core;
 using Core.Interfaces;
+using Core.Utilities;
 using Hangfire;
 using Infrastructure;
 using WebApi;
@@ -13,6 +14,7 @@ string connStr = builder.Configuration.GetConnectionString("LocalDb")!;
 // Add services to the container.
 
 builder.Services.AddControllers();
+builder.Services.AddCors();
 builder.Services.DisableAutoDataAnnotationValidation();
 
 builder.Services.AddDbContext(connStr);
@@ -31,10 +33,13 @@ builder.Services.AddFluentValidator();
 
 // add custom servies
 builder.Services.AddCustomServices();
+builder.Services.AddInfrastructureServices();
 builder.Services.AddCartService();
 
 // hangfire
 builder.Services.AddHangfire(connStr);
+
+builder.Services.Configure<GoogleAuthConfig>(builder.Configuration.GetSection("Google"));
 
 var app = builder.Build();
 

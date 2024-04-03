@@ -32,7 +32,7 @@ namespace WebApi.Controllers
         }
 
         //[Authorize] // based on cookies
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)] // based on JWT
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)] // based on JWT
 
         [HttpGet("{id:int}")] // view/1
         public async Task<IActionResult> Get([FromRoute] int id)
@@ -41,7 +41,7 @@ namespace WebApi.Controllers
         }
 
         [HttpPost]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = Policies.PREMIUM_CLIENT)]
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = Policies.PREMIUM_CLIENT)]
         public IActionResult Create([FromForm] CreateProductModel model)
         {
             productsService.Create(model);
@@ -56,7 +56,7 @@ namespace WebApi.Controllers
             return Ok();
         }
 
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = Roles.Admin)]
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = Roles.Admin)]
         [HttpDelete("{id:int}")]
         public IActionResult Delete([FromRoute] int id)
         {

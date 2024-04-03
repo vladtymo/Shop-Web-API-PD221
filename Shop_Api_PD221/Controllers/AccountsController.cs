@@ -1,5 +1,6 @@
 ﻿using Core.DTOs;
 using Core.Interfaces;
+using Core.Utilities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -29,7 +30,7 @@ namespace WebAPI.Controllers
             return Ok(await accountsService.Login(model));
         }
 
-        [HttpPost("refreshTokens")]
+        [HttpPost("refresh-tokens")]
         public async Task<IActionResult> RefreshTokens(UserTokens tokens)
         {
             return Ok(await accountsService.RefreshTokens(tokens));
@@ -40,6 +41,12 @@ namespace WebAPI.Controllers
         {
             await accountsService.Logout(model.RefreshToken);
             return Ok();
+        }
+
+        [HttpPost("google-sign-in")]
+        public async Task<IActionResult> GoogleSignIn(GoogleSignInDto model)
+        {
+            return Ok(await accountsService.SignInWithGoogle(model));
         }
     }
 }

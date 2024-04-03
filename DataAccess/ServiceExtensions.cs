@@ -1,8 +1,11 @@
 ﻿using Core.Entities;
 using Core.Interfaces;
+using Core.Services;
 using Infrastructure.Data;
 using Infrastructure.Repositories;
+using Infrastructure.Services;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -29,6 +32,11 @@ namespace Infrastructure
             })
                //.AddDefaultTokenProviders()
                .AddEntityFrameworkStores<ShopDbContext>();
+        }
+
+        public static void AddInfrastructureServices(this IServiceCollection services)
+        {
+            services.AddScoped<IGoogleAuthService, GoogleAuthService>();
         }
     }
 }

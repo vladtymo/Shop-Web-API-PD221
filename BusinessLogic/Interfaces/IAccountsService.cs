@@ -1,7 +1,12 @@
 ﻿using Core.DTOs;
+using Core.Utilities;
 
 namespace Core.Interfaces
 {
+    public class JwtResponseVM
+    {
+        public string Token { get; set; }
+    }
     public interface IAccountsService
     {
         Task Register(RegisterModel model);
@@ -10,6 +15,9 @@ namespace Core.Interfaces
         Task Logout(string refreshToken);
 
         Task RemoveExpiredRefreshTokens();
+
+        Task<LoginResponseDto> SignInWithGoogle(GoogleSignInDto model);
+        //Task<BaseResponse<JwtResponseVM>> SignInWithFacebook(FacebookSignInDto model);
 
         //Task<ResetPasswordResponse> ResetPasswordRequest(string email);
         //Task ResetPassword(ResetPasswordModel model);
