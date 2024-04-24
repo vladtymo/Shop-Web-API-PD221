@@ -9,7 +9,7 @@ using WebAPI;
 
 var builder = WebApplication.CreateBuilder(args);
 
-string connStr = builder.Configuration.GetConnectionString("LocalDb")!;
+string connStr = builder.Configuration.GetConnectionString("AzureDb")!;
 
 // Add services to the container.
 
@@ -42,6 +42,9 @@ builder.Services.AddHangfire(connStr);
 builder.Services.Configure<GoogleAuthConfig>(builder.Configuration.GetSection("Google"));
 
 var app = builder.Build();
+
+// apply migrations
+await app.ApplyMigrations();
 
 using (var scope = app.Services.CreateScope())
 {
