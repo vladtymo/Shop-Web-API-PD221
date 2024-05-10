@@ -16,18 +16,21 @@ namespace Core.Services
         private readonly IRepository<Product> productsRepo;
         private readonly IRepository<Category> categoriesRepo;
         private readonly IValidator<CreateProductModel> validator;
+        private readonly IFileService fileService;
 
         //private readonly ShopDbContext context;
 
         public ProductsService(IMapper mapper,
                                 IRepository<Product> productsRepo,
                                 IRepository<Category> categoriesRepo/*ShopDbContext context*/,
-                                IValidator<CreateProductModel> validator)
+                                IValidator<CreateProductModel> validator,
+                                IFileService fileService)
         {
             this.mapper = mapper;
             this.productsRepo = productsRepo;
             this.categoriesRepo = categoriesRepo;
             this.validator = validator;
+            this.fileService = fileService;
         }
 
         public void Create(CreateProductModel model)
@@ -62,6 +65,8 @@ namespace Core.Services
             // delete by id
             var product = productsRepo.GetById(id);
             if (product == null) throw new HttpException(Errors.ProductNotFound, HttpStatusCode.NotFound);
+
+            fileService.DeleteProductImage(product.ImageUrl);
 
             productsRepo.Delete(product);
             productsRepo.Save();

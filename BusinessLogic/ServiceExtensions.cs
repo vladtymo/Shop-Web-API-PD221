@@ -60,7 +60,7 @@ namespace Core
             services.AddScoped<IJwtService, JwtService>();
             services.AddScoped<IAccountsService, AccountsService>();
             services.AddScoped<IOrdersService, OrdersService>();
-            services.AddScoped<IFileService, LocalFileService>();
+            services.AddScoped<IFileService, AzureBlobService/*LocalFileService*/>();
             services.AddScoped<IEmailSender, MailJetSender>();
         }
     }
